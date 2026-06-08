@@ -1,0 +1,13 @@
+@Financeiro.API_HostAddress = http://localhost:5190
+
+### Health
+GET {{Financeiro.API_HostAddress}}/health
+
+### Login
+POST {{Financeiro.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@massinilabs.local",
+  "password": "Admin@123"
+}

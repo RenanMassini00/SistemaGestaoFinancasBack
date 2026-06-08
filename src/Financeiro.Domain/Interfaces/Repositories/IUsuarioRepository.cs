@@ -1,0 +1,8 @@
+using Financeiro.Domain.Entities;
+
+namespace Financeiro.Domain.Interfaces.Repositories;
+
+public interface IUsuarioRepository
+{
+    Task<Usuario?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+}
