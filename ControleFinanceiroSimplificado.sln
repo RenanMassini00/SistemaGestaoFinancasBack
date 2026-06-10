@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.API", "src\Financeiro.API\Financeiro.API.csproj", "{75539C39-9FE3-4903-8B51-438C09985AC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Application", "src\Financeiro.Application\Financeiro.Application.csproj", "{38D942A5-66C1-4AAA-A1F2-960885988AB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Domain", "src\Financeiro.Domain\Financeiro.Domain.csproj", "{EE550315-224B-4F43-B2AD-EF01B4EA7C7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Infrastructure", "src\Financeiro.Infrastructure\Financeiro.Infrastructure.csproj", "{D27CA866-A582-4A50-BEFB-5E799165F56D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75539C39-9FE3-4903-8B51-438C09985AC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75539C39-9FE3-4903-8B51-438C09985AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D942A5-66C1-4AAA-A1F2-960885988AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D942A5-66C1-4AAA-A1F2-960885988AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE550315-224B-4F43-B2AD-EF01B4EA7C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE550315-224B-4F43-B2AD-EF01B4EA7C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D27CA866-A582-4A50-BEFB-5E799165F56D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D27CA866-A582-4A50-BEFB-5E799165F56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+EndGlobal

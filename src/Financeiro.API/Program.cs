@@ -1,100 +1,10 @@
-using System.Text;
-using Financeiro.Application;
-using Financeiro.Infrastructure;
-using Financeiro.Infrastructure.Configurations;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-
+using System.Text; using Financeiro.Application; using Financeiro.Infrastructure; using Financeiro.Infrastructure.Configurations; using Microsoft.AspNetCore.Authentication.JwtBearer; using Microsoft.IdentityModel.Tokens; using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Financeiro API",
-        Version = "v1",
-        Description = "API de gestão financeira pronta para integração com React"
-    });
-
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Informe o token JWT no formato: Bearer {token}"
-    });
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Frontend", policy =>
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowAnyOrigin());
-});
-
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-
-var jwtSettings = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
-                  ?? throw new InvalidOperationException("JwtSettings não configurado.");
-
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings.Issuer,
-            ValidAudience = jwtSettings.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
-            ClockSkew = TimeSpan.Zero
-        };
-    });
-
+builder.Services.AddControllers(); builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options => { options.SwaggerDoc("v1", new OpenApiInfo{ Title="Controle Financeiro Simples API", Version="v1", Description="API para gestão de salários, cartões e contas fixas por período"}); options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme{ Name="Authorization", Type=SecuritySchemeType.Http, Scheme="bearer", BearerFormat="JWT", In=ParameterLocation.Header, Description="Informe o token JWT no formato: Bearer {token}"}); options.AddSecurityRequirement(new OpenApiSecurityRequirement{{ new OpenApiSecurityScheme{ Reference = new OpenApiReference{ Type=ReferenceType.SecurityScheme, Id="Bearer" } }, Array.Empty<string>() }}); });
+builder.Services.AddCors(options=>options.AddPolicy("Frontend", policy=>policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+builder.Services.AddApplication(); builder.Services.AddInfrastructure(builder.Configuration);
+var jwtSettings = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>() ?? throw new InvalidOperationException("JwtSettings não configurado.");
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{ options.TokenValidationParameters = new TokenValidationParameters{ ValidateIssuer=true, ValidateAudience=true, ValidateLifetime=true, ValidateIssuerSigningKey=true, ValidIssuer=jwtSettings.Issuer, ValidAudience=jwtSettings.Audience, IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)), ClockSkew=TimeSpan.Zero }; });
 builder.Services.AddAuthorization();
-
-var app = builder.Build();
-
-
-app.UseSwagger();
-app.UseSwaggerUI();
-
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
-
-app.UseCors("Frontend");
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapGet("/health", () => Results.Ok(new { status = "ok", timestamp = DateTime.UtcNow }));
-app.MapControllers();
-
-app.Run();
+var app = builder.Build(); app.UseSwagger(); app.UseSwaggerUI(); app.UseCors("Frontend"); app.UseAuthentication(); app.UseAuthorization(); app.MapGet("/health", ()=>Results.Ok(new{status="ok", timestamp=DateTime.UtcNow})); app.MapControllers(); app.Run();

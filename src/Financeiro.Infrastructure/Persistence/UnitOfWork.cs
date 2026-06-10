@@ -1,18 +1,1 @@
-using Financeiro.Domain.Interfaces;
-
-namespace Financeiro.Infrastructure.Persistence;
-
-public class UnitOfWork : IUnitOfWork
-{
-    private readonly AppDbContext _context;
-
-    public UnitOfWork(AppDbContext context)
-    {
-        _context = context;
-    }
-
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return _context.SaveChangesAsync(cancellationToken);
-    }
-}
+using Financeiro.Domain.Interfaces; namespace Financeiro.Infrastructure.Persistence; public class UnitOfWork : IUnitOfWork { private readonly AppDbContext _ctx; public UnitOfWork(AppDbContext ctx){_ctx=ctx;} public Task<int> SaveChangesAsync(CancellationToken cancellationToken=default)=>_ctx.SaveChangesAsync(cancellationToken); }
