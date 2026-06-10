@@ -1,2 +1,46 @@
-using Financeiro.Domain.Entities; using Microsoft.EntityFrameworkCore; using Microsoft.EntityFrameworkCore.Metadata.Builders;
-namespace Financeiro.Infrastructure.Persistence.Configurations; public class PeriodoPagamentoConfiguration : IEntityTypeConfiguration<PeriodoPagamento>{ public void Configure(EntityTypeBuilder<PeriodoPagamento> b){ b.ToTable("periodos_pagamento"); b.HasKey(x=>x.Id); b.Property(x=>x.MesReferencia).HasColumnName("mes_referencia").HasMaxLength(7).IsRequired(); b.Property(x=>x.DiaPagamento).HasColumnName("dia_pagamento").IsRequired(); b.Property(x=>x.Pessoa).HasColumnName("pessoa").HasMaxLength(120).IsRequired(); b.Property(x=>x.Salario).HasColumnName("salario").HasPrecision(18,2).IsRequired(); b.Property(x=>x.CreatedAt).HasColumnName("created_at").IsRequired(); b.Property(x=>x.UpdatedAt).HasColumnName("updated_at"); b.HasMany<DespesaPeriodo>("_despesas").WithOne().HasForeignKey(x=>x.PeriodoPagamentoId).OnDelete(DeleteBehavior.Cascade); b.Navigation("_despesas").UsePropertyAccessMode(PropertyAccessMode.Field); } }
+using Financeiro.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Financeiro.Infrastructure.Persistence.Configurations;
+
+public class PeriodoPagamentoConfiguration : IEntityTypeConfiguration<PeriodoPagamento>
+{
+    public void Configure(EntityTypeBuilder<PeriodoPagamento> b)
+    {
+        b.ToTable("periodos_pagamento");
+
+        b.HasKey(x => x.Id);
+
+        b.Property(x => x.MesReferencia)
+            .HasColumnName("mes_referencia")
+            .HasMaxLength(7)
+            .IsRequired();
+
+        b.Property(x => x.DiaPagamento)
+            .HasColumnName("dia_pagamento")
+            .IsRequired();
+
+        b.Property(x => x.Pessoa)
+            .HasColumnName("pessoa")
+            .HasMaxLength(120)
+            .IsRequired();
+
+        b.Property(x => x.Salario)
+            .HasColumnName("salario")
+            .HasPrecision(18, 2)
+            .IsRequired();
+
+        b.Property(x => x.CreatedAt)
+            .HasColumnName("created_at")
+            .IsRequired();
+
+        b.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at");
+
+        b.HasMany(x => x.Despesas)
+            .WithOne()
+            .HasForeignKey(x => x.PeriodoPagamentoId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}

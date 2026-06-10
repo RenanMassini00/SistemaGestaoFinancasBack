@@ -1,4 +1,10 @@
-using Financeiro.Application.Common; using Financeiro.Application.DTOs; using Financeiro.Application.Interfaces; using Financeiro.Application.Interfaces.Security; using Financeiro.Domain.Interfaces.Repositories;
+
+using Financeiro.Application.Common;
+using Financeiro.Application.DTOs;
+using Financeiro.Application.Interfaces;
+using Financeiro.Application.Interfaces.Security;
+using Financeiro.Domain.Interfaces.Repositories;
+
 namespace Financeiro.Application.Services;
 public class AuthService : IAuthService {
   private readonly IUsuarioRepository _repo; private readonly IPasswordHasher _hasher; private readonly IJwtTokenGenerator _jwt;
