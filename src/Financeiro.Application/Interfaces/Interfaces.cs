@@ -21,4 +21,5 @@ public interface IPeriodoService
     Task<Result<bool>> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Result<PeriodoResponseDto>> AddDespesaAsync(Guid periodoId, DespesaRequestDto request, CancellationToken cancellationToken = default);
     Task<Result<bool>> DeleteDespesaAsync(Guid periodoId, Guid despesaId, CancellationToken cancellationToken = default);
+    Task<Result<PeriodoResponseDto>> UpdateDespesaAsync(Guid periodoId, Guid despesaId, DespesaRequestDto request, CancellationToken cancellationToken = default);
 }

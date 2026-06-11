@@ -75,6 +75,29 @@ public class PeriodoService : IPeriodoService
         return Result<PeriodoResponseDto>.Ok(Map(p), "Período atualizado com sucesso.");
     }
 
+    public async Task<Result<PeriodoResponseDto>> UpdateDespesaAsync(
+    Guid periodoId,
+    Guid despesaId,
+    DespesaRequestDto request,
+    CancellationToken cancellationToken = default)
+    {
+        var periodo = await _periodos.GetByIdAsync(periodoId, cancellationToken);
+        if (periodo is null)
+            return Result<PeriodoResponseDto>.Fail("Período não encontrado.");
+
+        var despesa = await _despesas.GetByIdAsync(despesaId, cancellationToken);
+        if (despesa is null || despesa.PeriodoPagamentoId != periodoId)
+            return Result<PeriodoResponseDto>.Fail("Despesa não encontrada.");
+
+        despesa.Atualizar(request.Descricao, request.Valor, request.Tipo);
+        _despesas.Update(despesa);
+
+        await _uow.SaveChangesAsync(cancellationToken);
+
+        periodo = await _periodos.GetByIdAsync(periodoId, cancellationToken);
+        return Result<PeriodoResponseDto>.Ok(Map(periodo!), "Despesa atualizada com sucesso.");
+    }
+
     private static PeriodoResponseDto Map(PeriodoPagamento p)
     {
 
