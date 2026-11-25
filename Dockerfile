@@ -19,6 +19,7 @@ RUN dotnet publish "src/Financeiro.API/Financeiro.API.csproj" \
     -c $BUILD_CONFIGURATION \
     -o /app/publish \
     /p:UseAppHost=false
+RUN rm -f /app/publish/appsettings.json /app/publish/appsettings.*.json
 
 FROM runtime AS final
 WORKDIR /app
