@@ -23,3 +23,12 @@ public interface IPeriodoService
     Task<Result<bool>> DeleteDespesaAsync(Guid periodoId, Guid despesaId, CancellationToken cancellationToken = default);
     Task<Result<PeriodoResponseDto>> UpdateDespesaAsync(Guid periodoId, Guid despesaId, DespesaRequestDto request, CancellationToken cancellationToken = default);
 }
+
+public interface IInvestimentoService
+{
+    Task<Result<IReadOnlyList<InvestimentoResponseDto>>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Result<InvestimentoResponseDto>> CreateAsync(InvestimentoRequestDto request, CancellationToken cancellationToken = default);
+    Task<Result<InvestimentoResponseDto>> UpdateAsync(Guid id, InvestimentoPatchDto request, CancellationToken cancellationToken = default);
+    Task<Result<bool>> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Result<InvestimentoResponseDto>> AddAtualizacaoAsync(Guid id, AtualizacaoInvestimentoRequestDto request, CancellationToken cancellationToken = default);
+}

@@ -1,2 +1,2 @@
 using Financeiro.Application.Interfaces; using Financeiro.Application.Services; using Microsoft.Extensions.DependencyInjection;
-namespace Financeiro.Application; public static class DependencyInjection { public static IServiceCollection AddApplication(this IServiceCollection services){ services.AddScoped<IAuthService,AuthService>(); services.AddScoped<IPeriodoService,PeriodoService>(); return services; } }
+namespace Financeiro.Application; public static class DependencyInjection { public static IServiceCollection AddApplication(this IServiceCollection services){ services.AddScoped<IAuthService,AuthService>(); services.AddScoped<IPeriodoService,PeriodoService>(); services.AddScoped<IInvestimentoService,InvestimentoService>(); return services; } }
