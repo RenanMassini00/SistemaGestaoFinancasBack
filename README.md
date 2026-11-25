@@ -48,11 +48,9 @@ Em **Settings → Secrets and variables → Actions → Variables**, configure:
 | Variable | Valor | Padrão |
 | --- | --- | --- |
 | `DOCKER_PLATFORM` | Arquitetura do servidor | `linux/amd64` |
-| `DEPLOY_CONTAINER_NAME` | Nome do container atual da API | `financas-api` |
-| `DEPLOY_HTTP_PORT` | Porta local livre usada pelo proxy reverso | `8082` |
 | `DEPLOY_DOCKER_NETWORK` | Rede Docker compartilhada com o banco, se aplicável | vazio |
 
-O workflow publica a API em `127.0.0.1:<DEPLOY_HTTP_PORT>` no host e na porta `8080` dentro do container. Defina `DEPLOY_CONTAINER_NAME` e `DEPLOY_HTTP_PORT` para os valores que o servidor/proxy já utiliza; o padrão de porta é `8082`. O proxy reverso deve encaminhar as requisições `/api` ao endereço local configurado e manter o caminho da URL.
+Neste servidor, o workflow atualiza o container existente `financas_api`, publicado na porta `127.0.0.1:5010` no host e na porta `8080` dentro do container. O proxy reverso deve encaminhar as requisições `/api` para essa porta e manter o caminho da URL.
 
 ### Configuração de produção no servidor
 
@@ -75,8 +73,8 @@ sudo chmod 600 /home/deploy/financas-api.env
 
 Use os valores reais do ambiente atual, não os exemplos. Preserve especialmente `JwtSettings__Key`, `Issuer` e `Audience`: trocá-los invalida tokens existentes. O valor de `ConnectionStrings__DefaultConnection` deve apontar para um banco alcançável **a partir do container**; `localhost` dentro do container aponta para o próprio container. Se o MySQL também roda em Docker, conecte os containers à mesma rede com `DEPLOY_DOCKER_NETWORK` e use o nome do container/serviço do MySQL como host.
 
-O Dockerfile exclui os arquivos `appsettings*.json` publicados da imagem final. A API recebe configurações de runtime do arquivo protegido acima, evitando incluir configuração local na nova imagem pública. Como imagens publicadas anteriormente podem ter incluído `appsettings.json`, confira se esse arquivo continha credenciais reais; se continha, trate-as como expostas e troque a senha do banco/chaves afetadas antes do deploy. Trocar a chave JWT invalida tokens ativos. O workflow não executa scripts SQL automaticamente. Antes de ativar endpoints para tabelas novas, aplique a migração SQL correspondente no banco de produção, com backup e procedimento controlado.
+O Dockerfile exclui os arquivos `appsettings*.json` publicados da imagem final. A API recebe configurações de runtime do arquivo protegido acima, evitando incluir configuração local na nova imagem pública. Como imagens publicadas anteriormente podem ter incluído `appsettings.json`, confira se esse arquivo continha credenciais reais; se continha, trate-as como expostas e troque a senha do banco/chaves afetadas antes do deploy. Trocar a chave JWT invalida tokens ativos. O workflow não executa scripts SQL automaticamente. Antes de ativar os endpoints de investimentos em produção, aplique `database/20261124_investimentos.sql` no banco de produção, com backup e procedimento controlado.
 
 ### Teste do deploy
 
-Confirme que `deploy` pertence ao grupo `docker`, que a porta configurada está livre e que `curl` está instalado no servidor. Faça push para `main` e acompanhe **Actions → Deploy backend**. O frontend usa `https://financeiro.macroloapp.com.br/api`; confirme no proxy reverso que `/api` chega ao container/porta configurados.
+Confirme que `deploy` pertence ao grupo `docker` e que `curl` está instalado no servidor. O workflow substitui o container `financas_api` existente na porta `5010`; não remova esse container manualmente antes do deploy. Faça push para `main` e acompanhe **Actions → Deploy backend**. O frontend usa `https://financeiro.macroloapp.com.br/api`; o proxy reverso deve encaminhar `/api` para `127.0.0.1:5010`.
